@@ -32,8 +32,6 @@ export default class App extends Component {
    array[targetIndex] = array[itemIndex];
    array[itemIndex] = temp;
    this.setState({menuItemsArray: array});
-
-
   };
 
   render() {
@@ -57,14 +55,9 @@ export default class App extends Component {
         <ul
           style={{ listStyleType: 'none' }}
           id="ul1"
-          // onDrop={this.drop('ul1')}
-          // onDragOver={this.allowDrop}
         >
           {items}
         </ul>
-        <div id="div2" onDrop={this.drop('div2')} onDragOver={this.allowDrop}>
-          gfgfgfgfgfgf
-        </div>
       </div>
     );
   }
