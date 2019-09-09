@@ -1,67 +1,67 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function Menu1() {
-  return (
-    <div style={{ backgroundColor: 'red', width: 90 }} id="m1" draggable="true" onDragStart={drag}>
-      Menu 1
-    </div>
-  );
-}
-function Menu2() {
-  return (
-    <div style={{ backgroundColor: 'blue', width: 90 }} id="m2" draggable="true" onDragStart={drag}>
-      Menu 2
-    </div>
-  );
-}
-function Menu3() {
-  return (
-    <div
-      style={{ backgroundColor: 'green', width: 90 }}
-      id="m3"
-      draggable="true"
-      onDragStart={drag}
-    >
-      Menu 3
-    </div>
-  );
-}
+export default class App extends Component {
+  constructor(props) {
+    super(props);
 
-function allowDrop(ev) {
-  ev.preventDefault();
-}
+    this.state = {
+      menuItemsArray: [
+        { name: 'menu 1', id: '1', color: 'blue' },
+        { name: 'menu 2', id: '2', color: 'red' },
+        { name: 'menu 3', id: '3', color: 'green' },
+      ],
+    };
+  }
 
-function drag(ev) {
-  ev.dataTransfer.setData('text/plain', ev.target.id);
-}
+  allowDrop(ev) {
+    ev.preventDefault();
+  }
 
-const drop = (m) => (ev) => {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData('text/plain');
-  console.log('data:' + data);
-  console.log('m: ' + m);
-  if (!(m == 'l1' && data == 'm1')) ev.target.appendChild(document.getElementById(data));
-};
+  drag(ev) {
+    ev.dataTransfer.setData('text/plain', ev.target.id);
+  }
 
-function App() {
-  return (
-    <div>
-      <ul style={{ listStyleType: 'none' }}>
-        <li id="l1" onDrop={drop('l1')} onDragOver={allowDrop}>
-          <Menu1 />
+  drop = (m) => (ev) => {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData('text/plain');
+    console.log('elem:' + data);
+    console.log('hely: ' + m);
+    const item = this.state.menuItemsArray[data - 1];
+    let array = this.state.menuItemsArray;
+    array.splice(m - 1, 0, item);
+    this.setState({ menuItemsArray: array });
+  };
+
+  render() {
+    const items = this.state.menuItemsArray.map((item) => {
+      return (
+        <li
+          id={item.id}
+          draggable="true"
+          onDragStart={this.drag}
+          style={{ backgroundColor: item.color, width: 90 }}
+          onDrop={this.drop(item.id)}
+          onDragOver={this.allowDrop}
+        >
+          {item.name}
         </li>
-        <li id="l2" onDrop={drop('l2')} onDragOver={allowDrop}>
-          <Menu2 />
-        </li>
-        <li id="l3" onDrop={drop('l3')} onDragOver={allowDrop}>
-          <Menu3 />
-        </li>
-      </ul>
-      <div id="div2" onDrop={drop('div2')} onDragOver={allowDrop}>
-        gfgfgfgfgfgf
+      );
+    });
+
+    return (
+      <div>
+        <ul
+          style={{ listStyleType: 'none' }}
+          id="ul1"
+          // onDrop={this.drop('ul1')}
+          // onDragOver={this.allowDrop}
+        >
+          {items}
+        </ul>
+        <div id="div2" onDrop={this.drop('div2')} onDragOver={this.allowDrop}>
+          gfgfgfgfgfgf
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
-
-export default App;
