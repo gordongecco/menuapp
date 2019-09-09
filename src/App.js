@@ -9,6 +9,7 @@ export default class App extends Component {
         { name: 'menu 1', id: '1', color: 'blue' },
         { name: 'menu 2', id: '2', color: 'red' },
         { name: 'menu 3', id: '3', color: 'green' },
+        { name: 'menu 4', id: '4', color: 'yellow' },
       ],
     };
   }
@@ -21,15 +22,18 @@ export default class App extends Component {
     ev.dataTransfer.setData('text/plain', ev.target.id);
   }
 
-  drop = (m) => (ev) => {
+  drop = (target) => (ev) => {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData('text/plain');
-    console.log('elem:' + data);
-    console.log('hely: ' + m);
-    const item = this.state.menuItemsArray[data - 1];
-    let array = this.state.menuItemsArray;
-    array.splice(m - 1, 0, item);
-    this.setState({ menuItemsArray: array });
+    var menuItem = ev.dataTransfer.getData('text/plain');
+    const targetIndex = this.state.menuItemsArray.findIndex((item)=>(item.id === target));
+    const itemIndex = this.state.menuItemsArray.findIndex((item)=>(item.id === menuItem));
+   let array = this.state.menuItemsArray;
+   const temp = array[targetIndex];
+   array[targetIndex] = array[itemIndex];
+   array[itemIndex] = temp;
+   this.setState({menuItemsArray: array});
+
+
   };
 
   render() {
