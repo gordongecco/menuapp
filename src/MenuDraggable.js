@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 export default class MenuDraggable extends Component {
   constructor(props) {
     super(props);
-    this.r = Math.random()
-      .toString(36)
-      .substring(7);
+
     this.state = {
       menuItemsArray: [
         { name: 'menu 1', color: 'blue' },
@@ -21,12 +19,12 @@ export default class MenuDraggable extends Component {
   }
 
   dragStart = (id) => (ev) => {
-    ev.dataTransfer.setData(this.r, id);
+    ev.dataTransfer.setData('text/plain', id);
   };
 
   drop = (target) => (ev) => {
     ev.preventDefault();
-    var menuItem = ev.dataTransfer.getData(this.r);
+    var menuItem = ev.dataTransfer.getData('text/plain');
     const targetIndex = target;
     const itemIndex = menuItem;
     let array = this.state.menuItemsArray;
