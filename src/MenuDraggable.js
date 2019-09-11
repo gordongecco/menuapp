@@ -4,9 +4,7 @@ export default class MenuDraggable extends Component {
   constructor(props) {
     super(props);
 
-    this.ranId = Math.floor(Math.random() * 90000) + 10000;
-    console.log('constr: ' + this.ranId);
-
+    this.randomId = Math.floor(Math.random() * 90000) + 10000;
     this.state = {
       menuItemsArray: [
         { name: 'menu 1', color: 'blue' },
@@ -21,18 +19,17 @@ export default class MenuDraggable extends Component {
     ev.preventDefault();
   }
 
-  dragStart = (id, ranId) => (ev) => {
-    ev.dataTransfer.setData('text/plain', id);
-    ev.dataTransfer.setData('draggableId', ranId);
+  dragStart = (index, randomId) => (ev) => {
+    ev.dataTransfer.setData('text/plain', index);
+    ev.dataTransfer.setData('draggableId', randomId);
   };
 
   drop = (target) => (ev) => {
     ev.preventDefault();
-    let menuItem = ev.dataTransfer.getData('text/plain');
-    let draggableId = ev.dataTransfer.getData('draggableId');
-    if (this.ranId == draggableId) {
-      const targetIndex = target;
-      const itemIndex = menuItem;
+    const itemIndex = ev.dataTransfer.getData('text/plain');
+    const targetIndex = target;
+    let draggableItemId = ev.dataTransfer.getData('draggableId');
+    if (this.randomId == draggableItemId) {
       let array = this.state.menuItemsArray;
       const temp = array[targetIndex];
       array[targetIndex] = array[itemIndex];
@@ -46,7 +43,7 @@ export default class MenuDraggable extends Component {
       return (
         <li
           draggable="true"
-          onDragStart={this.dragStart(index, this.ranId)}
+          onDragStart={this.dragStart(index, this.randomId)}
           style={{ backgroundColor: item.color, width: 90 }}
           onDrop={this.drop(index)}
           onDragOver={this.allowDrop}
