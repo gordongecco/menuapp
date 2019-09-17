@@ -15,9 +15,23 @@ export default class MenuDraggable extends Component {
     };
   }
 
-  allowDrop(ev) {
+  // allowDrop(ev) {
+  //   ev.preventDefault();
+  // }
+  allowDrop = (target) => (ev) => {
     ev.preventDefault();
-  }
+    const itemIndex = ev.dataTransfer.getData('text/plain');
+    const targetIndex = target;
+    let draggableItemId = ev.dataTransfer.getData('draggableId');
+    console.log(targetIndex);
+    if (this.randomId == draggableItemId) {
+      let array = this.state.menuItemsArray;
+      const temp = array[targetIndex];
+      array[targetIndex] = array[itemIndex];
+      array[itemIndex] = temp;
+      this.setState({ menuItemsArray: array });
+    }
+  };
 
   dragStart = (index, randomId) => (ev) => {
     ev.dataTransfer.setData('text/plain', index);
@@ -29,6 +43,7 @@ export default class MenuDraggable extends Component {
     const itemIndex = ev.dataTransfer.getData('text/plain');
     const targetIndex = target;
     let draggableItemId = ev.dataTransfer.getData('draggableId');
+    console.log(itemIndex);
     if (this.randomId == draggableItemId) {
       let array = this.state.menuItemsArray;
       const temp = array[targetIndex];
@@ -46,7 +61,8 @@ export default class MenuDraggable extends Component {
           onDragStart={this.dragStart(index, this.randomId)}
           style={{ backgroundColor: item.color, width: 90 }}
           onDrop={this.drop(index)}
-          onDragOver={this.allowDrop}
+          // onDragOver={this.allowDrop}
+          onDragOver={this.allowDrop(index)}
         >
           {item.name}
         </li>
