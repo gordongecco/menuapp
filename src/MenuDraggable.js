@@ -28,6 +28,19 @@ export default class MenuDraggable extends Component {
 
   drop = (target) => (ev) => {
     ev.preventDefault();
+    // const itemIndex = this.state.activeItemIndex;
+    // const targetIndex = target;
+    // if (this.state.active) {
+    //   let array = this.state.menuItemsArray;
+    //   const temp = array[targetIndex];
+    //   array[targetIndex] = array[itemIndex];
+    //   array[itemIndex] = temp;
+    //   this.setState({ menuItemsArray: array });
+    // }
+  };
+
+  ondragenter = (target) => (ev) => {
+    ev.preventDefault();
     const itemIndex = this.state.activeItemIndex;
     const targetIndex = target;
     if (this.state.active) {
@@ -36,6 +49,7 @@ export default class MenuDraggable extends Component {
       array[targetIndex] = array[itemIndex];
       array[itemIndex] = temp;
       this.setState({ menuItemsArray: array });
+      this.setState({ activeItemIndex: targetIndex });
     }
   };
 
@@ -47,12 +61,14 @@ export default class MenuDraggable extends Component {
     const items = this.state.menuItemsArray.map((item, index) => {
       return (
         <li
+          key={index}
           draggable="true"
           onDragStart={this.dragStart(index)}
-          style={{ backgroundColor: item.color, width: 90 }}
+          style={{ backgroundColor: item.color, width: 90, height: 30 }}
           onDrop={this.drop(index)}
           onDragOver={this.allowDrop}
           onDragEnd={this.ondragend}
+          onDragEnter={this.ondragenter(index)}
         >
           {item.name}
         </li>
