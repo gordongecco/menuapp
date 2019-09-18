@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 export default class MenuDraggable extends Component {
   constructor(props) {
     super(props);
+    this.ondragend = this.ondragend.bind(this);
 
-    this.randomId = Math.floor(Math.random() * 90000) + 10000;
     this.state = {
       menuItemsArray: [
         { name: 'menu 1', color: 'blue' },
@@ -12,39 +12,25 @@ export default class MenuDraggable extends Component {
         { name: 'menu 3', color: 'green' },
         { name: 'menu 4', color: 'yellow' },
       ],
+      active: null,
+      activeItemIndex: null,
     };
   }
 
-  // allowDrop(ev) {
-  //   ev.preventDefault();
-  // }
-  allowDrop = (target) => (ev) => {
+  allowDrop(ev) {
     ev.preventDefault();
-    const itemIndex = ev.dataTransfer.getData('text/plain');
-    const targetIndex = target;
-    let draggableItemId = ev.dataTransfer.getData('draggableId');
-    console.log(targetIndex);
-    if (this.randomId == draggableItemId) {
-      let array = this.state.menuItemsArray;
-      const temp = array[targetIndex];
-      array[targetIndex] = array[itemIndex];
-      array[itemIndex] = temp;
-      this.setState({ menuItemsArray: array });
-    }
-  };
+  }
 
-  dragStart = (index, randomId) => (ev) => {
-    ev.dataTransfer.setData('text/plain', index);
-    ev.dataTransfer.setData('draggableId', randomId);
+  dragStart = (index) => (ev) => {
+    ev.dataTransfer.setData('text/plain', ev.target);
+    this.setState({ active: 'moving', activeItemIndex: index });
   };
 
   drop = (target) => (ev) => {
     ev.preventDefault();
-    const itemIndex = ev.dataTransfer.getData('text/plain');
+    const itemIndex = this.state.activeItemIndex;
     const targetIndex = target;
-    let draggableItemId = ev.dataTransfer.getData('draggableId');
-    console.log(itemIndex);
-    if (this.randomId == draggableItemId) {
+    if (this.state.active) {
       let array = this.state.menuItemsArray;
       const temp = array[targetIndex];
       array[targetIndex] = array[itemIndex];
@@ -52,17 +38,21 @@ export default class MenuDraggable extends Component {
       this.setState({ menuItemsArray: array });
     }
   };
+
+  ondragend(ev) {
+    this.setState({ active: null, activeItemIndex: null });
+  }
 
   render() {
     const items = this.state.menuItemsArray.map((item, index) => {
       return (
         <li
           draggable="true"
-          onDragStart={this.dragStart(index, this.randomId)}
+          onDragStart={this.dragStart(index)}
           style={{ backgroundColor: item.color, width: 90 }}
           onDrop={this.drop(index)}
-          // onDragOver={this.allowDrop}
-          onDragOver={this.allowDrop(index)}
+          onDragOver={this.allowDrop}
+          onDragEnd={this.ondragend}
         >
           {item.name}
         </li>
