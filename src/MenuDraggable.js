@@ -28,15 +28,6 @@ export default class MenuDraggable extends Component {
 
   drop = (target) => (ev) => {
     ev.preventDefault();
-    // const itemIndex = this.state.activeItemIndex;
-    // const targetIndex = target;
-    // if (this.state.active) {
-    //   let array = this.state.menuItemsArray;
-    //   const temp = array[targetIndex];
-    //   array[targetIndex] = array[itemIndex];
-    //   array[itemIndex] = temp;
-    //   this.setState({ menuItemsArray: array });
-    // }
   };
 
   ondragenter = (target) => (ev) => {
