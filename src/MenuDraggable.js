@@ -6,12 +6,14 @@ export default class MenuDraggable extends Component {
     this.ondragend = this.ondragend.bind(this);
 
     this.state = {
-      menuItemsArray: [
-        { name: 'menu 1', color: 'blue' },
-        { name: 'menu 2', color: 'red' },
-        { name: 'menu 3', color: 'green' },
-        { name: 'menu 4', color: 'yellow' },
-      ],
+      menuItemsArray: this.props.menuItems,
+
+      // [
+      //   { name: 'menu 1', color: 'blue' },
+      //   { name: 'menu 2', color: 'red' },
+      //   { name: 'menu 3', color: 'green' },
+      //   { name: 'menu 4', color: 'yellow' },
+      // ],
       active: null,
       activeItemIndex: null,
     };
