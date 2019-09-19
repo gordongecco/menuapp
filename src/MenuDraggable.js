@@ -7,13 +7,6 @@ export default class MenuDraggable extends Component {
 
     this.state = {
       menuItemsArray: this.props.menuItems,
-
-      // [
-      //   { name: 'menu 1', color: 'blue' },
-      //   { name: 'menu 2', color: 'red' },
-      //   { name: 'menu 3', color: 'green' },
-      //   { name: 'menu 4', color: 'yellow' },
-      // ],
       active: null,
       activeItemIndex: null,
     };
@@ -29,7 +22,7 @@ export default class MenuDraggable extends Component {
   };
 
   drop = (target) => (ev) => {
-    ev.preventDefault();
+    // ev.preventDefault();
   };
 
   ondragenter = (target) => (ev) => {
@@ -50,24 +43,67 @@ export default class MenuDraggable extends Component {
     this.setState({ active: null, activeItemIndex: null });
   }
 
-  render() {
-    const items = this.state.menuItemsArray.map((item, index) => {
-      return (
-        <li
-          key={index}
-          draggable="true"
-          onDragStart={this.dragStart(index)}
-          style={{ backgroundColor: item.color, width: 90, height: 30 }}
-          onDrop={this.drop(index)}
-          onDragOver={this.allowDrop}
-          onDragEnd={this.ondragend}
-          onDragEnter={this.ondragenter(index)}
-        >
-          {item.name}
-        </li>
-      );
+  getItems(array, child, parent) {
+    const newArray = array.map((item, index) => {
+      if (item.child == '' && parent == '') {
+        console.log('1');
+        return (
+          <li
+            key={index}
+            style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
+            draggable="true"
+            onDragStart={this.dragStart(index)}
+            // onDrop={this.drop(index)}
+            onDragOver={this.allowDrop}
+            onDragEnd={this.ondragend}
+            onDragEnter={this.ondragenter(index)}
+          >
+            {item.name}
+          </li>
+        );
+      } else if (item.name == parent && item.child == '') {
+        console.log('2');
+        return (
+          <li
+            key={index}
+            style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
+            draggable="true"
+            onDragStart={this.dragStart(index)}
+            // onDrop={this.drop(index)}
+            onDragOver={this.allowDrop}
+            onDragEnd={this.ondragend}
+            onDragEnter={this.ondragenter(index)}
+          >
+            {item.name}
+          </li>
+        );
+      } else if (item.child != '' && parent == '') {
+        console.log('3');
+        return (
+          <li
+            key={index}
+            style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
+            draggable="true"
+            onDragStart={this.dragStart(index)}
+            // onDrop={this.drop(index)}
+            onDragOver={this.allowDrop}
+            onDragEnd={this.ondragend}
+            onDragEnter={this.ondragenter(index)}
+          >
+            {item.name}
+            <ul>{this.getItems(array, item.child, item.name)}</ul>
+          </li>
+        );
+      } else {
+        console.log('4');
+        return;
+      }
     });
+    return newArray;
+  }
 
+  render() {
+    const items = this.getItems(this.state.menuItemsArray, '', '');
     return (
       <div>
         <ul style={{ listStyleType: 'none' }}>{items}</ul>
