@@ -45,6 +45,7 @@ export default class MenuDraggable extends Component {
 
   getItems(array, child, parent) {
     console.log('getItems');
+    console.log(array);
     const newArray = array.map((item, index) => {
       if (item.child == '' && parent == '' && array[index].flag) {
         console.log('1');
