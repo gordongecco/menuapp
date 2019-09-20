@@ -10,6 +10,9 @@ export default class MenuDraggable extends Component {
       active: null,
       activeItemIndex: null,
     };
+
+    // console.log(this.props.menuItems);
+
   }
 
   allowDrop(ev) {
@@ -108,6 +111,9 @@ export default class MenuDraggable extends Component {
   }
 
   render() {
+    let array = this.state.menuItemsArray;
+    array.forEach(element => {element.flag = true
+    });
     const items = this.getItems(this.state.menuItemsArray, '', '');
     return (
       <div>
