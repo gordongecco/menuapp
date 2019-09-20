@@ -5,6 +5,7 @@ export default class MenuDraggable extends Component {
     super(props);
     this.ondragend = this.ondragend.bind(this);
 
+    
     this.state = {
       menuItemsArray: this.props.menuItems,
       active: null,
@@ -47,8 +48,7 @@ export default class MenuDraggable extends Component {
   }
 
   getItems(array, child, parent) {
-    console.log('getItems');
-    console.log(array);
+    // console.log('getItems');
     const newArray = array.map((item, index) => {
       if (item.child == '' && parent == '' && array[index].flag) {
         console.log('1');
@@ -111,9 +111,9 @@ export default class MenuDraggable extends Component {
   }
 
   render() {
-    // let array = this.state.menuItemsArray;
-    // array.forEach(element => {element.flag = true
-    // });
+    let array = this.state.menuItemsArray;
+    array.forEach(element => {element.flag = true
+    });
     const items = this.getItems(this.state.menuItemsArray, '', '');
     return (
       <div>

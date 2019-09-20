@@ -9,7 +9,6 @@ const menu1 = [
   { name: 'menu 4', child: '', color: 'yellow', flag: true },
   { name: 'menu 5', child: '', color: 'pink', flag: true },
 ];
-console.log(menu1[1]);
 const menu2 = [
   { name: 'gizu1', child: '', color: 'blue' },
   { name: 'bali2', child: '', color: 'red' },
