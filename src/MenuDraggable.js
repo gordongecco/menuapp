@@ -111,9 +111,9 @@ export default class MenuDraggable extends Component {
   }
 
   render() {
-    let array = this.state.menuItemsArray;
-    array.forEach(element => {element.flag = true
-    });
+    // let array = this.state.menuItemsArray;
+    // array.forEach(element => {element.flag = true
+    // });
     const items = this.getItems(this.state.menuItemsArray, '', '');
     return (
       <div>
