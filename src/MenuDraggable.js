@@ -44,9 +44,11 @@ export default class MenuDraggable extends Component {
   }
 
   getItems(array, child, parent) {
+    console.log('getItems');
     const newArray = array.map((item, index) => {
-      if (item.child == '' && parent == '') {
+      if (item.child == '' && parent == '' && array[index].flag) {
         console.log('1');
+        array[index].flag = false;
         return (
           <li
             key={index}
@@ -61,8 +63,9 @@ export default class MenuDraggable extends Component {
             {item.name}
           </li>
         );
-      } else if (item.name == parent && item.child == '') {
+      } else if (item.name == child && item.child == '' && array[index].flag) {
         console.log('2');
+        array[index].flag = false;
         return (
           <li
             key={index}
@@ -77,8 +80,9 @@ export default class MenuDraggable extends Component {
             {item.name}
           </li>
         );
-      } else if (item.child != '' && parent == '') {
+      } else if (item.child != '' && parent == '' && array[index].flag) {
         console.log('3');
+        array[index].flag = false;
         return (
           <li
             key={index}
