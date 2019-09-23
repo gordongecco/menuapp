@@ -5,7 +5,6 @@ export default class MenuDraggable extends Component {
     super(props);
     this.ondragend = this.ondragend.bind(this);
 
-    
     this.state = {
       menuItemsArray: this.props.menuItems,
       active: null,
@@ -13,7 +12,6 @@ export default class MenuDraggable extends Component {
     };
 
     // console.log(this.props.menuItems);
-
   }
 
   allowDrop(ev) {
@@ -22,7 +20,9 @@ export default class MenuDraggable extends Component {
 
   dragStart = (index) => (ev) => {
     ev.dataTransfer.setData('text/plain', ev.target);
-    this.setState({ active: 'moving', activeItemIndex: index });
+    this.setState({ active: 'moving', activeItemIndex: index }, function() {
+      console.log('activeIndex' + this.state.activeItemIndex);
+    });
   };
 
   drop = (target) => (ev) => {
@@ -47,11 +47,12 @@ export default class MenuDraggable extends Component {
     this.setState({ active: null, activeItemIndex: null });
   }
 
-  getItems(array, child, parent) {
+  getItems(array, child, parent, itemIndex = 0) {
     // console.log('getItems');
     const newArray = array.map((item, index) => {
+      index += 1;
       if (item.child == '' && parent == '' && array[index].flag) {
-        console.log('1');
+        console.log('1,' + index);
         array[index].flag = false;
         return (
           <li
@@ -68,7 +69,7 @@ export default class MenuDraggable extends Component {
           </li>
         );
       } else if (item.name == child && item.child == '' && array[index].flag) {
-        console.log('2');
+        console.log('2,' + index);
         array[index].flag = false;
         return (
           <li
@@ -85,7 +86,7 @@ export default class MenuDraggable extends Component {
           </li>
         );
       } else if (item.child != '' && parent == '' && array[index].flag) {
-        console.log('3');
+        console.log('3,' + index);
         array[index].flag = false;
         return (
           <li
@@ -99,11 +100,15 @@ export default class MenuDraggable extends Component {
             onDragEnter={this.ondragenter(index)}
           >
             {item.name}
-            <ul>{this.getItems(array, item.child, item.name)}</ul>
+            <ul>
+              <div style={{ width: 120, height: 60, padding: 10 }}>
+                {this.getItems(array, item.child, item.name, index)}
+              </div>
+            </ul>
           </li>
         );
       } else {
-        console.log('4');
+        console.log('4,' + index);
         return;
       }
     });
@@ -112,9 +117,10 @@ export default class MenuDraggable extends Component {
 
   render() {
     let array = this.state.menuItemsArray;
-    array.forEach(element => {element.flag = true
+    array.forEach((element) => {
+      element.flag = true;
     });
-    const items = this.getItems(this.state.menuItemsArray, '', '');
+    const items = this.getItems(array, '', '');
     return (
       <div>
         <ul style={{ listStyleType: 'none' }}>{items}</ul>
