@@ -71,8 +71,21 @@ export default class MenuDraggable extends Component {
       }
     });
 
-    let elem = React.createElement(newArray[1].type);
-    newArray[12] = <elem {...newArray[1].props}>dadad</elem>;
+    // let Elem = React.createElement(newArray[1].type);
+    let Elem2 = <Elem {...newArray[1].props}>dadad</Elem>;
+    // React.Children.map(Elem2.props.children, (innerChild) => {
+    //   if (Elem2.type == 'ul') {
+    //     return (
+    //       <Elem2.type {...Elem2.props}>
+    //         {innerChild}
+    //         <ul>
+    //           <li>jhjhjh</li>
+    //         </ul>
+    //       </Elem2.type>
+    //     );
+    //   }
+    // });
+    newArray[12] = Elem2;
     console.log(newArray[12]);
     console.log(newArray[1]);
     return newArray;
