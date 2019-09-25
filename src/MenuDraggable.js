@@ -71,20 +71,13 @@ export default class MenuDraggable extends Component {
       }
     });
 
-    // let Elem = React.createElement(newArray[1].type);
-    let Elem2 = <Elem {...newArray[1].props}>dadad</Elem>;
-    // React.Children.map(Elem2.props.children, (innerChild) => {
-    //   if (Elem2.type == 'ul') {
-    //     return (
-    //       <Elem2.type {...Elem2.props}>
-    //         {innerChild}
-    //         <ul>
-    //           <li>jhjhjh</li>
-    //         </ul>
-    //       </Elem2.type>
-    //     );
-    //   }
+    let Elem = React.cloneElement(newArray[1]);
+    // React.Children.map(Elem.props.children[1], (ch) => {
+    //   console.log(ch.props);
+    //   console.log(ch.props.children);
     // });
+
+    const Elem2 = React.createElement('li', null, <li>fgfgfg</li>);
     newArray[12] = Elem2;
     console.log(newArray[12]);
     console.log(newArray[1]);
@@ -163,6 +156,7 @@ export default class MenuDraggable extends Component {
       element.flag = true;
     });
     const items = this.getItems(this.state.menuItemsArray, '', '');
+
     return (
       <div>
         <ul style={{ listStyleType: 'none' }}>{items}</ul>
