@@ -49,10 +49,17 @@ export default class MenuDraggable extends Component {
 
   getItems(array, child, parent, itemIndex = 0) {
     let newArray = [];
-
-    newArray = array.map((item, index) => {
-      if (array[index].flag && item.parent == '') {
-        array[index].flag = false;
+    let array2 = [...array];
+    function isElement() {
+      let count = 0;
+      array2.map((item) => {
+        if (item.flag) count++;
+      });
+      return count;
+    }
+    newArray = array2.map((item, index) => {
+      if (array2[index].flag && item.parent == '') {
+        array2[index].flag = false;
         return (
           <li
             key={index}
@@ -71,84 +78,8 @@ export default class MenuDraggable extends Component {
       }
     });
 
-    let Elem = React.cloneElement(newArray[1]);
-    // React.Children.map(Elem.props.children[1], (ch) => {
-    //   console.log(ch.props);
-    //   console.log(ch.props.children);
-    // });
-
-    const Elem2 = React.createElement('li', null, <li>fgfgfg</li>);
-    newArray[12] = Elem2;
-    console.log(newArray[12]);
-    console.log(newArray[1]);
     return newArray;
   }
-
-  // getItems(array, child, parent, itemIndex = 0) {
-  //   const newArray = array.map((item, index) => {
-  //     if (item.child == '' && parent == '' && array[index].flag) {
-  //       console.log('1,' + index + ' :' + array[index].flag);
-  //       array[index].flag = false;
-  //       return (
-  //         <li
-  //           key={index}
-  //           style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
-  //           draggable="true"
-  //           onDragStart={this.dragStart(index)}
-  //           // onDrop={this.drop(index)}
-  //           onDragOver={this.allowDrop}
-  //           onDragEnd={this.ondragend}
-  //           onDragEnter={this.ondragenter(index)}
-  //         >
-  //           {item.name}
-  //         </li>
-  //       );
-  //     } else if (item.name == child && item.child == '' && array[index].flag) {
-  //       console.log('2,' + index);
-  //       array[index].flag = false;
-  //       return (
-  //         <li
-  //           key={index}
-  //           style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
-  //           draggable="true"
-  //           onDragStart={this.dragStart(index)}
-  //           // onDrop={this.drop(index)}
-  //           onDragOver={this.allowDrop}
-  //           onDragEnd={this.ondragend}
-  //           onDragEnter={this.ondragenter(index)}
-  //         >
-  //           {item.name}
-  //         </li>
-  //       );
-  //     } else if (item.child != '' && parent == '' && array[index].flag) {
-  //       console.log('3,' + index);
-  //       array[index].flag = false;
-  //       return (
-  //         <li
-  //           key={index}
-  //           style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
-  //           draggable="true"
-  //           onDragStart={this.dragStart(index)}
-  //           // onDrop={this.drop(index)}
-  //           onDragOver={this.allowDrop}
-  //           onDragEnd={this.ondragend}
-  //           onDragEnter={this.ondragenter(index)}
-  //         >
-  //           {item.name}
-  //           <ul>
-  //             <div style={{ width: 120, height: 60, padding: 10 }}>
-  //               {this.getItems(array, item.child, item.name, index)}
-  //             </div>
-  //           </ul>
-  //         </li>
-  //       );
-  //     } else {
-  //       console.log('4,' + index);
-  //       return;
-  //     }
-  //   });
-  //   return newArray;
-  // }
 
   render() {
     let array = this.state.menuItemsArray;

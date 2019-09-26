@@ -8,17 +8,17 @@ const menu1 = [
   { name: 'menu 3', parent: 'menu 5', color: 'green', flag: true },
   { name: 'menu 4', parent: '', color: 'yellow', flag: true },
   { name: 'menu 5', parent: '', color: 'pink', flag: true },
-  { name: 'menu 6', parent: 'menu 7', color: 'pink', flag: true },
-  { name: 'menu 7', parent: '', color: 'green', flag: true },
+  { name: 'menu 6', parent: 'menu 5', color: 'pink', flag: true },
+  { name: 'menu 7', parent: 'menu 6', color: 'green', flag: true },
   { name: 'menu 8', parent: '', color: 'purple', flag: true },
-  { name: 'menu 9', parent: 'menu 5', color: 'red', flag: true },
+  { name: 'menu 9', parent: '', color: 'red', flag: true },
   { name: 'menu 10', parent: '', color: 'yellow', flag: true },
 ];
 const menu2 = [
-  { name: 'gizu1', child: '', color: 'blue' },
-  { name: 'bali2', child: '', color: 'red' },
-  { name: 'jani3', child: '', color: 'green' },
-  { name: 'dani4', child: '', color: 'yellow' },
+  { name: 'gizu1', parent: '', color: 'blue' },
+  { name: 'bali2', parent: '', color: 'red' },
+  { name: 'jani3', parent: '', color: 'green' },
+  { name: 'dani4', parent: '', color: 'yellow' },
 ];
 
 function App() {
