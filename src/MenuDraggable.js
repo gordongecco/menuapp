@@ -11,7 +11,41 @@ export default class MenuDraggable extends Component {
       activeItemIndex: null,
     };
 
+    this.sortElements();
     // console.log(this.props.menuItems);
+  }
+
+  sortElements() {
+    function seek(array, obj) {
+      array.map((item) => {
+        if (item.name == obj.parent) {
+          if (!item.hasOwnProperty('children')) {
+            item.children = [];
+          }
+          item.children.push(obj);
+          obj.flag = false;
+        } else {
+          if (item.hasOwnProperty('children')) {
+            seek(item.children, obj);
+          }
+        }
+      });
+    }
+
+    let array = [...this.props.menuItems];
+    let sortedArray = [];
+    array.map((item) => {
+      if (item.parent == '') {
+        sortedArray.push(item);
+        item.flag = false;
+      }
+    });
+
+    array.map((item) => {
+      seek(sortedArray, item);
+    });
+
+    console.log(sortedArray);
   }
 
   allowDrop(ev) {
