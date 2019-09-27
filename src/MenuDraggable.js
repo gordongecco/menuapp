@@ -12,7 +12,6 @@ export default class MenuDraggable extends Component {
     };
 
     this.sortElements();
-    // console.log(this.props.menuItems);
   }
 
   sortElements() {
@@ -23,7 +22,6 @@ export default class MenuDraggable extends Component {
             item.children = [];
           }
           item.children.push(obj);
-          obj.flag = false;
         } else {
           if (item.hasOwnProperty('children')) {
             seek(item.children, obj);
@@ -34,10 +32,10 @@ export default class MenuDraggable extends Component {
 
     let array = [...this.props.menuItems];
     let sortedArray = [];
+
     array.map((item) => {
       if (item.parent == '') {
         sortedArray.push(item);
-        item.flag = false;
       }
     });
 
@@ -48,15 +46,45 @@ export default class MenuDraggable extends Component {
     console.log(sortedArray);
   }
 
+  // sortElements2() {
+  //   function seek(parent, obj) {
+  //     array.map((item) => {
+  //       if (parent.name == item.parent) {
+  //         if (!parent.hasOwnProperty('children')) {
+  //           item.children = [];
+  //         }
+  //         item.children.push(obj);
+  //       } else {
+  //         if (item.hasOwnProperty('children')) {
+  //           seek(item.children, obj);
+  //         }
+  //       }
+  //     });
+  //   }
+
+  //   let array = [...this.props.menuItems];
+  //   let sortedArray = [];
+
+  //   array.map((itemParent) => {
+  //     if (itemParent.parent == '') {
+  //       seek(itemParent, item);
+
+  //       sortedArray.push(itemParent);
+  //     }
+  //   });
+
+  //   array.map((item) => {});
+
+  //   console.log(sortedArray);
+  // }
+
   allowDrop(ev) {
     ev.preventDefault();
   }
 
   dragStart = (index) => (ev) => {
     ev.dataTransfer.setData('text/plain', ev.target);
-    this.setState({ active: 'moving', activeItemIndex: index }, function() {
-      console.log('activeIndex' + this.state.activeItemIndex);
-    });
+    this.setState({ active: 'moving', activeItemIndex: index }, function() {});
   };
 
   drop = (target) => (ev) => {
@@ -81,18 +109,12 @@ export default class MenuDraggable extends Component {
     this.setState({ active: null, activeItemIndex: null });
   }
 
-  getItems(array, child, parent, itemIndex = 0) {
+  getItems(array) {
     let newArray = [];
     let array2 = [...array];
-    function isElement() {
-      let count = 0;
-      array2.map((item) => {
-        if (item.flag) count++;
-      });
-      return count;
-    }
+
     newArray = array2.map((item, index) => {
-      if (array2[index].flag && item.parent == '') {
+      if (item.parent == '') {
         array2[index].flag = false;
         return (
           <li
@@ -116,11 +138,7 @@ export default class MenuDraggable extends Component {
   }
 
   render() {
-    let array = this.state.menuItemsArray;
-    array.forEach((element) => {
-      element.flag = true;
-    });
-    const items = this.getItems(this.state.menuItemsArray, '', '');
+    const items = this.getItems(this.state.menuItemsArray);
 
     return (
       <div>
