@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { isJSXOpeningFragment } from '@babel/types';
 
 export default class MenuDraggable extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class MenuDraggable extends Component {
       activeItemIndex: null,
     };
 
-    this.sortElements();
+    this.sortedArray = this.sortElements();
   }
 
   sortElements() {
@@ -44,39 +45,9 @@ export default class MenuDraggable extends Component {
     });
 
     console.log(sortedArray);
+    return sortedArray;
   }
 
-  // sortElements2() {
-  //   function seek(parent, obj) {
-  //     array.map((item) => {
-  //       if (parent.name == item.parent) {
-  //         if (!parent.hasOwnProperty('children')) {
-  //           item.children = [];
-  //         }
-  //         item.children.push(obj);
-  //       } else {
-  //         if (item.hasOwnProperty('children')) {
-  //           seek(item.children, obj);
-  //         }
-  //       }
-  //     });
-  //   }
-
-  //   let array = [...this.props.menuItems];
-  //   let sortedArray = [];
-
-  //   array.map((itemParent) => {
-  //     if (itemParent.parent == '') {
-  //       seek(itemParent, item);
-
-  //       sortedArray.push(itemParent);
-  //     }
-  //   });
-
-  //   array.map((item) => {});
-
-  //   console.log(sortedArray);
-  // }
 
   allowDrop(ev) {
     ev.preventDefault();
@@ -113,9 +84,55 @@ export default class MenuDraggable extends Component {
     let newArray = [];
     let array2 = [...array];
 
-    newArray = array2.map((item, index) => {
-      if (item.parent == '') {
-        array2[index].flag = false;
+    // newArray = array2.map((item, index) => {
+    //   if (item.parent == '') {
+    //     return (
+    //       <li
+    //         key={index}
+    //         style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
+    //         draggable="true"
+    //         onDragStart={this.dragStart(index)}
+    //         // onDrop={this.drop(index)}
+    //         onDragOver={this.allowDrop}
+    //         onDragEnd={this.ondragend}
+    //         onDragEnter={this.ondragenter(index)}
+    //       >
+    //         {item.name}
+    //         <ul></ul>
+    //       </li>
+    //     );
+    //   }
+    // });
+
+
+    function makeTree(item){
+
+      if (!item.hasOwnProperty('children')) {
+       return;
+      }else{
+        return(
+          <ul>
+            {item.children.map(item=>{
+              return(
+                  <li
+                     style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
+                     draggable="true"
+                     >
+                      { item.name}
+                      <br></br>
+                      {makeTree(item)}
+                  </li>
+              );
+            })}
+          </ul>
+          );
+      }
+
+    }
+
+
+    newArray = this.sortedArray.map((item, index) => {
+    
         return (
           <li
             key={index}
@@ -128,12 +145,12 @@ export default class MenuDraggable extends Component {
             onDragEnter={this.ondragenter(index)}
           >
             {item.name}
-            <ul></ul>
+            <br></br>
+              {makeTree(item)}
           </li>
         );
-      }
+      
     });
-
     return newArray;
   }
 
