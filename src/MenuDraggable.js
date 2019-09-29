@@ -63,6 +63,9 @@ export default class MenuDraggable extends Component {
   };
 
   ondragenter = (target) => (ev) => {
+    console.log('cél elem indexe: '+target);
+    console.log('kezdő elem indexe: '+this.state.activeItemIndex);
+
     ev.preventDefault();
     const itemIndex = this.state.activeItemIndex;
     const targetIndex = target;
@@ -84,26 +87,6 @@ export default class MenuDraggable extends Component {
     let newArray = [];
     let array2 = [...array];
 
-    // newArray = array2.map((item, index) => {
-    //   if (item.parent == '') {
-    //     return (
-    //       <li
-    //         key={index}
-    //         style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
-    //         draggable="true"
-    //         onDragStart={this.dragStart(index)}
-    //         // onDrop={this.drop(index)}
-    //         onDragOver={this.allowDrop}
-    //         onDragEnd={this.ondragend}
-    //         onDragEnter={this.ondragenter(index)}
-    //       >
-    //         {item.name}
-    //         <ul></ul>
-    //       </li>
-    //     );
-    //   }
-    // });
-
 
     function makeTree(item){
 
@@ -111,16 +94,17 @@ export default class MenuDraggable extends Component {
        return;
       }else{
         return(
-          <ul>
-            {item.children.map(item=>{
+          <ul style={{listStyleType:'none'}}>
+            {item.children.map((item,index)=>{
               return(
-                  <li
-                     style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
+                  <li  key={index}
                      draggable="true"
                      >
-                      { item.name}
-                      <br></br>
-                      {makeTree(item)}
+                      <div style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}>
+            {item.name}
+            <br></br>
+              {makeTree(item)}
+            </div>
                   </li>
               );
             })}
@@ -136,7 +120,6 @@ export default class MenuDraggable extends Component {
         return (
           <li
             key={index}
-            style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
             draggable="true"
             onDragStart={this.dragStart(index)}
             // onDrop={this.drop(index)}
@@ -144,9 +127,11 @@ export default class MenuDraggable extends Component {
             onDragEnd={this.ondragend}
             onDragEnter={this.ondragenter(index)}
           >
+            <div style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}>
             {item.name}
             <br></br>
               {makeTree(item)}
+            </div>
           </li>
         );
       
