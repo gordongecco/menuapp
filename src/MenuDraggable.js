@@ -44,10 +44,8 @@ export default class MenuDraggable extends Component {
       seek(sortedArray, item);
     });
 
-    console.log(sortedArray);
     return sortedArray;
   }
-
 
   allowDrop(ev) {
     ev.preventDefault();
@@ -62,15 +60,16 @@ export default class MenuDraggable extends Component {
     // ev.preventDefault();
   };
 
-  ondragenter = (target) => (ev) => {
-    console.log('cél elem indexe: '+target);
-    console.log('kezdő elem indexe: '+this.state.activeItemIndex);
-
+  ondragenter = (targetId) => (ev) => {
     ev.preventDefault();
-    const itemIndex = this.state.activeItemIndex;
-    const targetIndex = target;
     if (this.state.active) {
       let array = this.state.menuItemsArray;
+      const itemIndex = array.findIndex((item) => item.name == this.state.activeItemIndex);
+      const targetIndex = array.findIndex((item) => item.name == targetId);
+
+      console.log('kezdő elem indexe: ' + itemIndex);
+      console.log('cél elem indexe: ' + targetIndex);
+
       const temp = array[targetIndex];
       array[targetIndex] = array[itemIndex];
       array[itemIndex] = temp;
@@ -87,54 +86,53 @@ export default class MenuDraggable extends Component {
     let newArray = [];
     let array2 = [...array];
 
-
-    function makeTree(item){
-
+    function makeTree(item) {
       if (!item.hasOwnProperty('children')) {
-       return;
-      }else{
-        return(
-          <ul style={{listStyleType:'none'}}>
-            {item.children.map((item,index)=>{
-              return(
-                  <li  key={index}
-                     draggable="true"
-                     >
-                      <div style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}>
-            {item.name}
-            <br></br>
-              {makeTree(item)}
-            </div>
-                  </li>
+        return;
+      } else {
+        return (
+          <ul style={{ listStyleType: 'none' }}>
+            {item.children.map((item, index) => {
+              return (
+                <li key={index} draggable="true">
+                  <div
+                    style={{
+                      backgroundColor: item.color,
+                      width: 90,
+                      height: 30,
+                      textAlign: 'center',
+                    }}
+                  >
+                    {item.name}
+                    <br></br>
+                    {makeTree(item)}
+                  </div>
+                </li>
               );
             })}
           </ul>
-          );
+        );
       }
-
     }
 
-
     newArray = this.sortedArray.map((item, index) => {
-    
-        return (
-          <li
-            key={index}
-            draggable="true"
-            onDragStart={this.dragStart(index)}
-            // onDrop={this.drop(index)}
-            onDragOver={this.allowDrop}
-            onDragEnd={this.ondragend}
-            onDragEnter={this.ondragenter(index)}
-          >
-            <div style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}>
+      return (
+        <li
+          key={index}
+          draggable="true"
+          onDragStart={this.dragStart(item.name)}
+          // onDrop={this.drop(index)}
+          onDragOver={this.allowDrop}
+          onDragEnd={this.ondragend}
+          onDragEnter={this.ondragenter(item.name)}
+        >
+          <div style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}>
             {item.name}
             <br></br>
-              {makeTree(item)}
-            </div>
-          </li>
-        );
-      
+            {makeTree(item)}
+          </div>
+        </li>
+      );
     });
     return newArray;
   }
