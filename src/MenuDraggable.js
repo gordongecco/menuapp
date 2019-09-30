@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { isJSXOpeningFragment } from '@babel/types';
 
 export default class MenuDraggable extends Component {
   constructor(props) {
@@ -31,7 +30,7 @@ export default class MenuDraggable extends Component {
       });
     }
 
-    let array = [...this.props.menuItems];
+    let array = [...this.state.menuItemsArray];
     let sortedArray = [];
 
     array.map((item) => {
@@ -56,35 +55,39 @@ export default class MenuDraggable extends Component {
     this.setState({ active: 'moving', activeItemIndex: index }, function() {});
   };
 
-  drop = (target) => (ev) => {
-    // ev.preventDefault();
-  };
-
-  ondragenter = (targetId) => (ev) => {
+  drop = (targetId) => (ev) => {
+    console.log(this.sortedArray);
+    console.log(this.state.menuItemsArray);
     ev.preventDefault();
     if (this.state.active) {
       let array = this.state.menuItemsArray;
       const itemIndex = array.findIndex((item) => item.name == this.state.activeItemIndex);
       const targetIndex = array.findIndex((item) => item.name == targetId);
 
-      console.log('kezdő elem indexe: ' + itemIndex);
-      console.log('cél elem indexe: ' + targetIndex);
-
       const temp = array[targetIndex];
       array[targetIndex] = array[itemIndex];
       array[itemIndex] = temp;
-      this.setState({ menuItemsArray: array });
-      this.setState({ activeItemIndex: targetIndex });
+      this.setState({ menuItemsArray: array }, () => {});
+      // this.setState({ activeItemIndex: targetIndex });
     }
+    this.sortedArray = this.sortElements();
+  };
+
+  ondragenter = (targetId) => (ev) => {
+    ev.preventDefault();
   };
 
   ondragend(ev) {
     this.setState({ active: null, activeItemIndex: null });
   }
 
-  getItems(array) {
+  getItems() {
     let newArray = [];
-    let array2 = [...array];
+
+    const dragStart = this.dragStart;
+    const onDrop = this.drop;
+    const onDragOver = this.onDragOver;
+    const onDragEnd = this.onDragEnd;
 
     function makeTree(item) {
       if (!item.hasOwnProperty('children')) {
@@ -94,19 +97,23 @@ export default class MenuDraggable extends Component {
           <ul style={{ listStyleType: 'none' }}>
             {item.children.map((item, index) => {
               return (
-                <li key={index} draggable="true">
-                  <div
-                    style={{
-                      backgroundColor: item.color,
-                      width: 90,
-                      height: 30,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {item.name}
-                    <br></br>
-                    {makeTree(item)}
-                  </div>
+                <li
+                  key={index}
+                  draggable="true"
+                  style={{
+                    backgroundColor: item.color,
+                    width: 90,
+                    height: 30,
+                    textAlign: 'center',
+                  }}
+                  onDragStart={dragStart(item.name)}
+                  onDrop={onDrop(item.name)}
+                  onDragOver={onDragOver}
+                  onDragEnd={onDragEnd}
+                >
+                  {item.name}
+                  <br></br>
+                  {makeTree(item)}
                 </li>
               );
             })}
@@ -119,18 +126,17 @@ export default class MenuDraggable extends Component {
       return (
         <li
           key={index}
+          style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
           draggable="true"
           onDragStart={this.dragStart(item.name)}
-          // onDrop={this.drop(index)}
+          onDrop={this.drop(item.name)}
           onDragOver={this.allowDrop}
           onDragEnd={this.ondragend}
-          onDragEnter={this.ondragenter(item.name)}
+          // onDragEnter={this.ondragenter(item.name)}
         >
-          <div style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}>
-            {item.name}
-            <br></br>
-            {makeTree(item)}
-          </div>
+          {item.name}
+          <br></br>
+          {makeTree(item)}
         </li>
       );
     });
@@ -138,7 +144,7 @@ export default class MenuDraggable extends Component {
   }
 
   render() {
-    const items = this.getItems(this.state.menuItemsArray);
+    const items = this.getItems();
 
     return (
       <div>
