@@ -5,16 +5,15 @@ export default class MenuDraggable extends Component {
     super(props);
     this.ondragend = this.ondragend.bind(this);
 
+    // this.sortedArray = this.sortElements(this.props.menuItems);
     this.state = {
-      menuItemsArray: this.props.menuItems,
+      menuItemsArray: this.sortElements(this.props.menuItems),
       active: null,
       activeItemIndex: null,
     };
-
-    this.sortedArray = this.sortElements();
   }
 
-  sortElements() {
+  sortElements(array) {
     function seek(array, obj) {
       array.map((item) => {
         if (item.name == obj.parent) {
@@ -30,7 +29,6 @@ export default class MenuDraggable extends Component {
       });
     }
 
-    let array = [...this.state.menuItemsArray];
     let sortedArray = [];
 
     array.map((item) => {
@@ -56,21 +54,23 @@ export default class MenuDraggable extends Component {
   };
 
   drop = (targetId) => (ev) => {
-    console.log(this.sortedArray);
-    console.log(this.state.menuItemsArray);
     ev.preventDefault();
     if (this.state.active) {
-      let array = this.state.menuItemsArray;
+      let array = [...this.props.menuItems];
       const itemIndex = array.findIndex((item) => item.name == this.state.activeItemIndex);
       const targetIndex = array.findIndex((item) => item.name == targetId);
 
-      const temp = array[targetIndex];
-      array[targetIndex] = array[itemIndex];
-      array[itemIndex] = temp;
-      this.setState({ menuItemsArray: array }, () => {});
+      const temp = array[targetIndex].name;
+      array[targetIndex].name = array[itemIndex].name;
+      array[itemIndex].name = temp;
+
+      console.log(JSON.parse(JSON.stringify(this.props.menuItems)));
+
+      this.setState({ menuItemsArray: this.sortElements(array) }, () => {});
       // this.setState({ activeItemIndex: targetIndex });
     }
-    this.sortedArray = this.sortElements();
+
+    console.log(JSON.parse(JSON.stringify(this.sortedArray)));
   };
 
   ondragenter = (targetId) => (ev) => {
@@ -122,7 +122,7 @@ export default class MenuDraggable extends Component {
       }
     }
 
-    newArray = this.sortedArray.map((item, index) => {
+    newArray = this.state.menuItemsArray.map((item, index) => {
       return (
         <li
           key={index}
