@@ -13,7 +13,7 @@ export default class MenuDraggable extends Component {
     };
   }
 
-  sortElements(array) {
+  sortElements(arrayChange) {
     function seek(array, obj) {
       array.map((item) => {
         if (item.name == obj.parent) {
@@ -30,6 +30,8 @@ export default class MenuDraggable extends Component {
     }
 
     let sortedArray = [];
+    let array = JSON.parse(JSON.stringify(arrayChange));
+
 
     array.map((item) => {
       if (item.parent == '') {
@@ -56,21 +58,28 @@ export default class MenuDraggable extends Component {
   drop = (targetId) => (ev) => {
     ev.preventDefault();
     if (this.state.active) {
-      let array = [...this.props.menuItems];
+      let array = JSON.parse(JSON.stringify(this.props.menuItems));
+
+      console.log(JSON.parse(JSON.stringify(array)));
       const itemIndex = array.findIndex((item) => item.name == this.state.activeItemIndex);
       const targetIndex = array.findIndex((item) => item.name == targetId);
 
       const temp = array[targetIndex].name;
+      const color = array[targetIndex].color;
       array[targetIndex].name = array[itemIndex].name;
       array[itemIndex].name = temp;
+      array[targetIndex].color = array[itemIndex].color;
+      array[itemIndex].color = color;
 
-      console.log(JSON.parse(JSON.stringify(this.props.menuItems)));
+      console.log(JSON.parse(JSON.stringify(array)));
 
-      this.setState({ menuItemsArray: this.sortElements(array) }, () => {});
+      const t = this.sortElements(array);
+      console.log(JSON.parse(JSON.stringify(t)));
+
+      this.setState({ menuItemsArray:  t}, () => {});
       // this.setState({ activeItemIndex: targetIndex });
     }
 
-    console.log(JSON.parse(JSON.stringify(this.sortedArray)));
   };
 
   ondragenter = (targetId) => (ev) => {
@@ -122,7 +131,8 @@ export default class MenuDraggable extends Component {
       }
     }
 
-    newArray = this.state.menuItemsArray.map((item, index) => {
+    let arrayFromState = JSON.parse(JSON.stringify(this.state.menuItemsArray));
+    newArray = arrayFromState.map((item, index) => {
       return (
         <li
           key={index}
