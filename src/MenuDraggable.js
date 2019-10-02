@@ -60,7 +60,6 @@ export default class MenuDraggable extends Component {
     ev.preventDefault();
     if (this.state.active) {
       let array = JSON.parse(JSON.stringify(this.oneDimensionArray));
-      console.log(JSON.parse(JSON.stringify(array)));
 
       const itemIndex = array.findIndex((item) => item.name == this.state.activeItemIndex);
       const targetIndex = array.findIndex((item) => item.name == targetId);
@@ -68,19 +67,22 @@ export default class MenuDraggable extends Component {
       console.log('targetname:' + targetId);
       console.log('target index:' + targetIndex);
 
-      const temp = array[targetIndex].name;
-      const color = array[targetIndex].color;
-      array[targetIndex].name = array[itemIndex].name;
-      array[itemIndex].name = temp;
-      array[targetIndex].color = array[itemIndex].color;
-      array[itemIndex].color = color;
+      if (!(array[targetIndex].name == array[itemIndex].parent)) {
+        const temp = array[targetIndex].name;
+        const color = array[targetIndex].color;
+        array[targetIndex].name = array[itemIndex].name;
+        array[itemIndex].name = temp;
+        array[targetIndex].color = array[itemIndex].color;
+        array[itemIndex].color = color;
 
-      this.oneDimensionArray = array;
-      const t = this.sortElements(this.oneDimensionArray);
-      console.log(JSON.parse(JSON.stringify(t)));
+        this.oneDimensionArray = array;
+        const t = this.sortElements(this.oneDimensionArray);
+        console.log(JSON.parse(JSON.stringify(array)));
+        console.log(JSON.parse(JSON.stringify(t)));
 
-      this.setState({ menuItemsArray: t }, () => {});
-      // this.setState({ activeItemIndex: targetIndex });
+        this.setState({ menuItemsArray: t }, () => {});
+        // this.setState({ activeItemIndex: targetIndex });
+      }
     }
   };
 
