@@ -71,8 +71,8 @@ export default class MenuDraggable extends Component {
         this.oneDimArray[targetIndex].color = this.oneDimArray[itemIndex].color;
         this.oneDimArray[itemIndex].color = color;
 
-        const t = this.sortElements(this.oneDimArray);
         console.log(JSON.parse(JSON.stringify(this.oneDimArray)));
+        const t = this.sortElements(this.oneDimArray);
         console.log(JSON.parse(JSON.stringify(t)));
 
         this.setState({ menuItemsArray: t }, () => {});
