@@ -5,9 +5,9 @@ export default class MenuDraggable extends Component {
     super(props);
     this.ondragend = this.ondragend.bind(this);
 
-    this.oneDimensionArray = JSON.parse(JSON.stringify(this.props.menuItems));
+    this.oneDimArray = JSON.parse(JSON.stringify(this.props.menuItems));
     this.state = {
-      menuItemsArray: this.sortElements(this.oneDimensionArray),
+      menuItemsArray: this.sortElements(this.oneDimArray),
       active: null,
       activeItemIndex: null,
     };
@@ -32,12 +32,7 @@ export default class MenuDraggable extends Component {
     let sortedArray = [];
     let array = JSON.parse(JSON.stringify(arrayChange));
 
-    array.map((item) => {
-      if (item.parent == '') {
-        sortedArray.push(item);
-      }
-    });
-
+    array.map((item) => (item.parent == '' ? sortedArray.push(item) : null));
     array.map((item) => {
       seek(sortedArray, item);
     });
@@ -51,33 +46,33 @@ export default class MenuDraggable extends Component {
 
   dragStart = (index) => (ev) => {
     ev.stopPropagation();
-    console.log('startitem:' + index);
+    // console.log('startitem:' + index);
     ev.dataTransfer.setData('text/plain', ev.target);
-    this.setState({ active: 'moving', activeItemIndex: index }, function() {});
+    this.setState({ active: 'moving', activeItemIndex: index });
   };
 
   drop = (targetId) => (ev) => {
     ev.preventDefault();
+    ev.stopPropagation();
     if (this.state.active) {
-      let array = JSON.parse(JSON.stringify(this.oneDimensionArray));
-
-      const itemIndex = array.findIndex((item) => item.name == this.state.activeItemIndex);
-      const targetIndex = array.findIndex((item) => item.name == targetId);
+      const itemIndex = this.oneDimArray.findIndex(
+        (item) => item.name == this.state.activeItemIndex,
+      );
+      const targetIndex = this.oneDimArray.findIndex((item) => item.name == targetId);
       console.log('item name:' + this.state.activeItemIndex);
       console.log('targetname:' + targetId);
-      console.log('target index:' + targetIndex);
+      // console.log('target index:' + targetIndex);
 
-      if (!(array[targetIndex].name == array[itemIndex].parent)) {
-        const temp = array[targetIndex].name;
-        const color = array[targetIndex].color;
-        array[targetIndex].name = array[itemIndex].name;
-        array[itemIndex].name = temp;
-        array[targetIndex].color = array[itemIndex].color;
-        array[itemIndex].color = color;
+      if (!(this.oneDimArray[targetIndex].name == this.oneDimArray[itemIndex].parent)) {
+        const temp = this.oneDimArray[targetIndex].name;
+        const color = this.oneDimArray[targetIndex].color;
+        this.oneDimArray[targetIndex].name = this.oneDimArray[itemIndex].name;
+        this.oneDimArray[itemIndex].name = temp;
+        this.oneDimArray[targetIndex].color = this.oneDimArray[itemIndex].color;
+        this.oneDimArray[itemIndex].color = color;
 
-        this.oneDimensionArray = array;
-        const t = this.sortElements(this.oneDimensionArray);
-        console.log(JSON.parse(JSON.stringify(array)));
+        const t = this.sortElements(this.oneDimArray);
+        console.log(JSON.parse(JSON.stringify(this.oneDimArray)));
         console.log(JSON.parse(JSON.stringify(t)));
 
         this.setState({ menuItemsArray: t }, () => {});
