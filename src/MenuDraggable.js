@@ -5,9 +5,9 @@ export default class MenuDraggable extends Component {
     super(props);
     this.ondragend = this.ondragend.bind(this);
 
-    // this.sortedArray = this.sortElements(this.props.menuItems);
+    this.oneDimensionArray = JSON.parse(JSON.stringify(this.props.menuItems));
     this.state = {
-      menuItemsArray: this.sortElements(this.props.menuItems),
+      menuItemsArray: this.sortElements(this.oneDimensionArray),
       active: null,
       activeItemIndex: null,
     };
@@ -32,7 +32,6 @@ export default class MenuDraggable extends Component {
     let sortedArray = [];
     let array = JSON.parse(JSON.stringify(arrayChange));
 
-
     array.map((item) => {
       if (item.parent == '') {
         sortedArray.push(item);
@@ -51,6 +50,8 @@ export default class MenuDraggable extends Component {
   }
 
   dragStart = (index) => (ev) => {
+    ev.stopPropagation();
+    console.log('startitem:' + index);
     ev.dataTransfer.setData('text/plain', ev.target);
     this.setState({ active: 'moving', activeItemIndex: index }, function() {});
   };
@@ -58,11 +59,14 @@ export default class MenuDraggable extends Component {
   drop = (targetId) => (ev) => {
     ev.preventDefault();
     if (this.state.active) {
-      let array = JSON.parse(JSON.stringify(this.props.menuItems));
-
+      let array = JSON.parse(JSON.stringify(this.oneDimensionArray));
       console.log(JSON.parse(JSON.stringify(array)));
+
       const itemIndex = array.findIndex((item) => item.name == this.state.activeItemIndex);
       const targetIndex = array.findIndex((item) => item.name == targetId);
+      console.log('item name:' + this.state.activeItemIndex);
+      console.log('targetname:' + targetId);
+      console.log('target index:' + targetIndex);
 
       const temp = array[targetIndex].name;
       const color = array[targetIndex].color;
@@ -71,15 +75,13 @@ export default class MenuDraggable extends Component {
       array[targetIndex].color = array[itemIndex].color;
       array[itemIndex].color = color;
 
-      console.log(JSON.parse(JSON.stringify(array)));
-
-      const t = this.sortElements(array);
+      this.oneDimensionArray = array;
+      const t = this.sortElements(this.oneDimensionArray);
       console.log(JSON.parse(JSON.stringify(t)));
 
-      this.setState({ menuItemsArray:  t}, () => {});
+      this.setState({ menuItemsArray: t }, () => {});
       // this.setState({ activeItemIndex: targetIndex });
     }
-
   };
 
   ondragenter = (targetId) => (ev) => {
