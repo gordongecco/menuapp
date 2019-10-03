@@ -11,6 +11,8 @@ export default class MenuDraggable extends Component {
       active: null,
       activeItemIndex: null,
     };
+
+    this.sortElements2(this.oneDimArray);
   }
 
   sortElements(arrayChange) {
@@ -32,12 +34,41 @@ export default class MenuDraggable extends Component {
     let sortedArray = [];
     let array = JSON.parse(JSON.stringify(arrayChange));
 
-    array.map((item) => (item.parent == '' ? sortedArray.push(item) : null));
+    array.forEach((item) => {
+      if (item.parent == '') sortedArray.push(item);
+    });
+
+    // console.log(JSON.parse(JSON.stringify(sortedArray)));
+
     array.map((item) => {
       seek(sortedArray, item);
     });
 
     return sortedArray;
+  }
+
+  sortElements2(firstArray) {
+    let newArray = [];
+    let array = JSON.parse(JSON.stringify(firstArray));
+    function sort(item) {
+      firstArray.map((elem) => {
+        if (item.name == elem.parent) {
+          if (!item.hasOwnProperty('children')) {
+            item.children = [];
+          }
+          item.children.push(elem);
+          sort(elem);
+        }
+      });
+    }
+
+    array.map((item) => {
+      if (item.parent == '') {
+        return item; // return sort(item);
+      }
+    });
+
+    console.log(firstArray);
   }
 
   allowDrop(ev) {
