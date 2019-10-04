@@ -50,25 +50,25 @@ export default class MenuDraggable extends Component {
   sortElements2(firstArray) {
     let newArray = [];
     let array = JSON.parse(JSON.stringify(firstArray));
+
+    const t = array.filter((item) => item.parent == '');
+
     function sort(item) {
-      firstArray.map((elem) => {
+      array.map((elem) => {
         if (item.name == elem.parent) {
           if (!item.hasOwnProperty('children')) {
             item.children = [];
+            sort(elem);
+            item.children.push(elem);
           }
-          item.children.push(elem);
-          sort(elem);
         }
       });
     }
 
-    array.map((item) => {
-      if (item.parent == '') {
-        return item; // return sort(item);
-      }
+    t.map((item) => {
+      sort(item);
     });
-
-    console.log(firstArray);
+    console.log(t);
   }
 
   allowDrop(ev) {
