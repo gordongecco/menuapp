@@ -12,55 +12,25 @@ export default class MenuDraggable extends Component {
       activeItemIndex: null,
     };
 
-    this.sortElements2(this.oneDimArray);
   }
 
-  sortElements(arrayChange) {
-    function seek(array, obj) {
-      array.map((item) => {
-        if (item.name == obj.parent) {
-          if (!item.hasOwnProperty('children')) {
-            item.children = [];
-          }
-          item.children.push(obj);
-        } else {
-          if (item.hasOwnProperty('children')) {
-            seek(item.children, obj);
-          }
-        }
-      });
-    }
+ 
 
-    let sortedArray = [];
-    let array = JSON.parse(JSON.stringify(arrayChange));
-
-    array.forEach((item) => {
-      if (item.parent == '') sortedArray.push(item);
-    });
-
-    // console.log(JSON.parse(JSON.stringify(sortedArray)));
-
-    array.map((item) => {
-      seek(sortedArray, item);
-    });
-
-    return sortedArray;
-  }
-
-  sortElements2(firstArray) {
-    let newArray = [];
+  sortElements(firstArray) {
     let array = JSON.parse(JSON.stringify(firstArray));
 
     const t = array.filter((item) => item.parent == '');
 
     function sort(item) {
       array.map((elem) => {
+        
         if (item.name == elem.parent) {
           if (!item.hasOwnProperty('children')) {
             item.children = [];
-            sort(elem);
-            item.children.push(elem);
           }
+            item.children.push(elem);
+            sort(elem);
+          
         }
       });
     }
@@ -68,8 +38,8 @@ export default class MenuDraggable extends Component {
     t.map((item) => {
       sort(item);
     });
-    console.log(t);
-  }
+    return t;
+    }
 
   allowDrop(ev) {
     ev.preventDefault();
