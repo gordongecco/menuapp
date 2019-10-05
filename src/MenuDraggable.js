@@ -19,8 +19,7 @@ export default class MenuDraggable extends Component {
   sortElements(firstArray) {
     let array = JSON.parse(JSON.stringify(firstArray));
 
-    const t = array.filter((item) => item.parent == '');
-
+    
     function sort(item) {
       array.map((elem) => {
         
@@ -28,16 +27,20 @@ export default class MenuDraggable extends Component {
           if (!item.hasOwnProperty('children')) {
             item.children = [];
           }
-            item.children.push(elem);
-            sort(elem);
+          item.children.push(elem);
+          sort(elem);
           
         }
       });
     }
-
+    
+    const t = array.filter((item) => item.parent == '')
     t.map((item) => {
       sort(item);
     });
+
+    // return array.filter((item) => item.parent == '').map((item) => {sort(item)});
+
     return t;
     }
 
@@ -47,7 +50,6 @@ export default class MenuDraggable extends Component {
 
   dragStart = (index) => (ev) => {
     ev.stopPropagation();
-    // console.log('startitem:' + index);
     ev.dataTransfer.setData('text/plain', ev.target);
     this.setState({ active: 'moving', activeItemIndex: index });
   };
@@ -60,9 +62,6 @@ export default class MenuDraggable extends Component {
         (item) => item.name == this.state.activeItemIndex,
       );
       const targetIndex = this.oneDimArray.findIndex((item) => item.name == targetId);
-      console.log('item name:' + this.state.activeItemIndex);
-      console.log('targetname:' + targetId);
-      // console.log('target index:' + targetIndex);
 
       if (!(this.oneDimArray[targetIndex].name == this.oneDimArray[itemIndex].parent)) {
         const temp = this.oneDimArray[targetIndex].name;
@@ -72,9 +71,7 @@ export default class MenuDraggable extends Component {
         this.oneDimArray[targetIndex].color = this.oneDimArray[itemIndex].color;
         this.oneDimArray[itemIndex].color = color;
 
-        console.log(JSON.parse(JSON.stringify(this.oneDimArray)));
         const t = this.sortElements(this.oneDimArray);
-        console.log(JSON.parse(JSON.stringify(t)));
 
         this.setState({ menuItemsArray: t }, () => {});
         // this.setState({ activeItemIndex: targetIndex });
