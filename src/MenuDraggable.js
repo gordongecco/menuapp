@@ -16,8 +16,8 @@ export default class MenuDraggable extends Component {
 
  
 
-  sortElements(firstArray) {
-    let array = JSON.parse(JSON.stringify(firstArray));
+  sortElements(oneDimArray) {
+    let array = JSON.parse(JSON.stringify(oneDimArray));
 
     
     function sort(item) {
@@ -34,14 +34,12 @@ export default class MenuDraggable extends Component {
       });
     }
     
-    const t = array.filter((item) => item.parent == '')
-    t.map((item) => {
+    const result = array.filter((item) => item.parent == '');
+    result.map((item) => {
       sort(item);
     });
-
-    // return array.filter((item) => item.parent == '').map((item) => {sort(item)});
-
-    return t;
+   
+    return result;
     }
 
   allowDrop(ev) {
