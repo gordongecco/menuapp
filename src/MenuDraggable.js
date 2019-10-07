@@ -11,7 +11,6 @@ export default class MenuDraggable extends Component {
       active: null,
       activeItemIndex: null,
     };
-
   }
 
  
