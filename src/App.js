@@ -34,7 +34,7 @@ function App() {
   return (
     <div>
       <MenuDraggable menuItems={menu1} />
-      <MenuDraggable menuItems={menu2} />
+      {/* <MenuDraggable menuItems={menu2} /> */}
     </div>
   );
 }

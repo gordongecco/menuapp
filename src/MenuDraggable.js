@@ -54,6 +54,7 @@ export default class MenuDraggable extends Component {
   drop = (targetId) => (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
+
     if (this.state.active) {
       const itemIndex = this.oneDimArray.findIndex(
         (item) => item.name == this.state.activeItemIndex,
