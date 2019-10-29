@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+
+export function sum(a,b){
+  return a+b;
+};
+
 export default class MenuDraggable extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +20,7 @@ export default class MenuDraggable extends Component {
 
  
 
-  sortElements(oneDimArray) {
+   sortElements(oneDimArray) {
     let array = JSON.parse(JSON.stringify(oneDimArray));
 
     
