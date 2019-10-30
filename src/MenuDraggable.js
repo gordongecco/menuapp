@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
-
-export function sum(a,b){
-  return a+b;
-};
+export function sum(a, b) {
+  return a + b;
+}
 
 export default class MenuDraggable extends Component {
   constructor(props) {
@@ -18,33 +17,28 @@ export default class MenuDraggable extends Component {
     };
   }
 
- 
-
-   sortElements(oneDimArray) {
+  sortElements(oneDimArray) {
     let array = JSON.parse(JSON.stringify(oneDimArray));
 
-    
     function sort(item) {
       array.map((elem) => {
-        
         if (item.name == elem.parent) {
           if (!item.hasOwnProperty('children')) {
             item.children = [];
           }
           item.children.push(elem);
           sort(elem);
-          
         }
       });
     }
-    
+
     const result = array.filter((item) => item.parent == '');
     result.map((item) => {
       sort(item);
     });
-   
+
     return result;
-    }
+  }
 
   allowDrop(ev) {
     ev.preventDefault();
@@ -158,6 +152,7 @@ export default class MenuDraggable extends Component {
 
     return (
       <div>
+        sasa
         <ul style={{ listStyleType: 'none' }}>{items}</ul>
       </div>
     );
