@@ -101,8 +101,8 @@ export default class MenuDraggable extends Component {
             {item.children.map((item, index) => {
               return (
                 <li
+                  id={item.name}
                   key={index}
-                  class={item.name}
                   draggable="true"
                   style={{
                     backgroundColor: item.color,
