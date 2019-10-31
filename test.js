@@ -4,6 +4,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
+import { wrap } from 'module';
 
 Enzyme.configure({ adapter: new Adapter() });
 const menu1 = [
@@ -41,6 +42,10 @@ test('enzyme test shallow rendering', () => {
 });
 
 test('enzyme test DOM rendering', () => {
-  const wrapper = shallow(<MenuDraggable menuItems={menu1} />);
+  const wrapper = mount(<MenuDraggable menuItems={menu1} />);
   expect(wrapper.instance().sortElements(menu1)).toEqual(expectedMenu);
+  expect(wrapper.state().active).toBe(null);
+  wrapper.instance().dragStart('menu 1');
+  wrapper.find([(className = 'menu 2')]).simulate('click');
+  expect(wrapper.state().active).toBe('moving');
 });

@@ -102,6 +102,7 @@ export default class MenuDraggable extends Component {
               return (
                 <li
                   key={index}
+                  class={item.name}
                   draggable="true"
                   style={{
                     backgroundColor: item.color,
@@ -129,6 +130,7 @@ export default class MenuDraggable extends Component {
     newArray = arrayFromState.map((item, index) => {
       return (
         <li
+          id={item.name}
           key={index}
           style={{ backgroundColor: item.color, width: 90, height: 30, textAlign: 'center' }}
           draggable="true"
