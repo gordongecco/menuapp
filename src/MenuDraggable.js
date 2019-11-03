@@ -50,6 +50,9 @@ export default class MenuDraggable extends Component {
     this.setState({ active: 'moving', activeItemIndex: index });
   };
 
+  valami = (i)=>(u)=>{
+    return i+u;
+  };
   drop = (targetId) => (ev) => {
     ev.preventDefault();
     ev.stopPropagation();

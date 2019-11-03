@@ -43,11 +43,14 @@ test('enzyme test shallow rendering', () => {
 
 test('enzyme test DOM rendering', () => {
   const wrapper = mount(<MenuDraggable menuItems={menu1} />);
-  const dragStartSpy = jest.spyOn(MenuDraggable.prototype, 'dragstart');
-  expect(wrapper.instance().sortElements(menu1)).toEqual(expectedMenu);
-  expect(wrapper.state().active).toBe(null);
-  // wrapper.instance().dragStart('menu 1');
-  expect(wrapper.find({ id: 'menu 2' })).toHaveLength(1);
-  wrapper.find({ id: 'menu 2' }).simulate('mousedown', { index: 'menu 2' });
-  expect(dragStartSpy).toBeCalled();
+  const dragStartSpy = jest.spyOn(wrapper.instance(), 'dragStart');
+  // expect(wrapper.instance().sortElements(menu1)).toEqual(expectedMenu);
+  // expect(wrapper.state().active).toBe(null);
+  // wrapper.setState({});
+  wrapper.instance().dragStart();
+  // expect(wrapper.find({ id: 'menu 2' })).toHaveLength(1);
+  // wrapper.find({ id: 'menu 2' }).simulate('mousedown', { index: 'menu 2' });
+  // wrapper.find({ id: 'menu 2' }).simulate('dragstart');
+  expect(dragStartSpy).toHaveBeenCalled ();
+  expect(wrapper.state().active).toBe('moving');
 });
