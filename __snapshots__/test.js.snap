@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`react testing library 1`] = `
+<div>
+  <div>
+    sasa
+    <ul
+      style="list-style-type: none;"
+    >
+      <li
+        draggable="true"
+        id="menu 1"
+        style="background-color: blue; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 1
+        <br />
+      </li>
+      <li
+        draggable="true"
+        id="menu 2"
+        style="background-color: red; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 2
+        <br />
+      </li>
+      <li
+        draggable="true"
+        id="menu 4"
+        style="background-color: yellow; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 4
+        <br />
+        <ul
+          style="list-style-type: none;"
+        >
+          <li
+            draggable="true"
+            id="menu 6"
+            style="background-color: pink; width: 90px; height: 30px; text-align: center;"
+          >
+            menu 6
+            <br />
+          </li>
+        </ul>
+      </li>
+      <li
+        draggable="true"
+        id="menu 5"
+        style="background-color: pink; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 5
+        <br />
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`react testing library 2`] = `
+<div>
+  <div>
+    sasa
+    <ul
+      style="list-style-type: none;"
+    >
+      <li
+        draggable="true"
+        id="menu 2"
+        style="background-color: red; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 2
+        <br />
+      </li>
+      <li
+        draggable="true"
+        id="menu 1"
+        style="background-color: blue; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 1
+        <br />
+      </li>
+      <li
+        draggable="true"
+        id="menu 4"
+        style="background-color: yellow; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 4
+        <br />
+        <ul
+          style="list-style-type: none;"
+        >
+          <li
+            draggable="true"
+            id="menu 6"
+            style="background-color: pink; width: 90px; height: 30px; text-align: center;"
+          >
+            menu 6
+            <br />
+          </li>
+        </ul>
+      </li>
+      <li
+        draggable="true"
+        id="menu 5"
+        style="background-color: pink; width: 90px; height: 30px; text-align: center;"
+      >
+        menu 5
+        <br />
+      </li>
+    </ul>
+  </div>
+</div>
+`;
