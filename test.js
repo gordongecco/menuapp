@@ -319,16 +319,16 @@ const DndSimulator = {
   },
 };
 
-test('adds 1 + 2 to equal 3', () => {
+test.skip('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
 });
 
-test('enzyme test shallow rendering', () => {
+test.skip('enzyme test shallow rendering', () => {
   const wrapper = shallow(<MenuDraggable menuItems={menu1} />);
   expect(wrapper.contains('sasa')).toBe(true);
 });
 
-test('enzyme test DOM rendering', () => {
+test.skip('enzyme test DOM rendering', () => {
   const wrapper = mount(<MenuDraggable menuItems={menu1} />);
   const dragStartSpy = jest.spyOn(wrapper.instance(), 'dragStart');
   // expect(wrapper.instance().sortElements(menu1)).toEqual(expectedMenu);
@@ -342,7 +342,7 @@ test('enzyme test DOM rendering', () => {
   // expect(wrapper.state().active).toBe('moving');
 });
 
-test.skip('react testing library', () => {
+test('react testing library', () => {
   const { getByText, getById, container } = render(<MenuDraggable menuItems={menu1} />);
   expect(getByText('menu 2').textContent).toBe('menu 2');
   expect(document.getElementById('menu 2').textContent).toBe('menu 2');
@@ -369,5 +369,10 @@ test('enzyme test DOM rendering', () => {
   const startItem = wrapper.find({ id: 'menu 1' }).getDOMNode();
   const targetItem = wrapper.find({ id: 'menu 2' }).getDOMNode();
   DndSimulator.simulate(startItem, targetItem);
-  expect(wrapper.state().active).toBe('move');
+  expect(wrapper.state().number).toBe(0);
+  wrapper.instance().onClick();
+  expect(wrapper.state().number).toBe(1);
+  console.log(wrapper.find({ id: 'b1' }).html());
+  expect(wrapper.find({ id: 'b1' }).html()).toEqual('<button id="b1">1</button>');
+  expect(wrapper.find({ id: 'b1' }).text()).toMatch('1');
 });

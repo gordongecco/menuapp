@@ -3,6 +3,11 @@
 exports[`react testing library 1`] = `
 <div>
   <div>
+    <button
+      id="b1"
+    >
+      0
+    </button>
     sasa
     <ul
       style="list-style-type: none;"
@@ -59,6 +64,11 @@ exports[`react testing library 1`] = `
 exports[`react testing library 2`] = `
 <div>
   <div>
+    <button
+      id="b1"
+    >
+      0
+    </button>
     sasa
     <ul
       style="list-style-type: none;"

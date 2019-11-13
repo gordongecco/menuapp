@@ -14,6 +14,7 @@ export default class MenuDraggable extends Component {
       menuItemsArray: this.sortElements(this.oneDimArray),
       active: null,
       activeItemIndex: null,
+      number: 0,
     };
   }
 
@@ -152,11 +153,19 @@ export default class MenuDraggable extends Component {
     return newArray;
   }
 
+  onClick = (e) => {
+    const newNumber = ++this.state.number;
+    this.setState({ number: newNumber });
+  };
+
   render() {
     const items = this.getItems();
 
     return (
       <div>
+        <button id="b1" onClick={this.onClick}>
+          {this.state.number}
+        </button>
         sasa
         <ul style={{ listStyleType: 'none' }}>{items}</ul>
       </div>
