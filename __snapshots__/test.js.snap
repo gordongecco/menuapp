@@ -67,7 +67,7 @@ exports[`react testing library 2`] = `
     <button
       id="b1"
     >
-      0
+      55
     </button>
     sasa
     <ul

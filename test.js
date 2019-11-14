@@ -194,7 +194,7 @@ const DndSimulator = {
    * \param targetElement The element the source element should be
    *                        dragged to.
    */
-  simulate: function(sourceElement, targetElement) {
+  simulate: function(sourceElement, targetElement, event = 0) {
     /* if strings are specified, assume they are CSS selectors */
     if (typeof sourceElement == 'string') {
       sourceElement = document.querySelector(sourceElement);
@@ -208,6 +208,25 @@ const DndSimulator = {
       left refers to X, and top to Y */
     var sourceCoordinates = sourceElement.getBoundingClientRect();
     var targetCoordinates = targetElement.getBoundingClientRect();
+
+    if (event === 1) {
+      var mouseDownEvent = this.createEvent('mousedown', {
+        clientX: sourceCoordinates.left,
+        clientY: sourceCoordinates.top,
+      });
+
+      sourceElement.dispatchEvent(mouseDownEvent);
+
+      /* simulate a drag start event on the source element */
+      var dragStartEvent = this.createEvent('dragstart', {
+        clientX: sourceCoordinates.left,
+        clientY: sourceCoordinates.top,
+        dataTransfer: new DndSimulatorDataTransfer(),
+      });
+
+      sourceElement.dispatchEvent(dragStartEvent);
+      return;
+    }
 
     /* simulate a mouse down event on the coordinates
       of the source element */
@@ -349,6 +368,9 @@ test('react testing library', () => {
 
   expect(container).toMatchSnapshot();
   DndSimulator.simulate(getByText('menu 1'), getByText('menu 2'));
+  expect(document.getElementById('b1').textContent).toBe('55');
+
+  // console.log(container.textContent);
   // const myEvent = createEvent.dragStart(getByText('menu 2'));
   // fireEvent(
   //   getByText('menu 2'),
@@ -372,7 +394,10 @@ test('enzyme test DOM rendering', () => {
   expect(wrapper.state().number).toBe(0);
   wrapper.instance().onClick();
   expect(wrapper.state().number).toBe(1);
-  console.log(wrapper.find({ id: 'b1' }).html());
   expect(wrapper.find({ id: 'b1' }).html()).toEqual('<button id="b1">1</button>');
   expect(wrapper.find({ id: 'b1' }).text()).toMatch('1');
+  DndSimulator.simulate(startItem, targetItem, 1);
+  // console.log(wrapper.text());
+  expect(wrapper.find({ id: 'menu 1' }).invoke('onClick')(2)).toBe(2);
+  wrapper.find({ id: 'menu 1' }).simulate('dragstart');
 });

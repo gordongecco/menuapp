@@ -8,6 +8,7 @@ export default class MenuDraggable extends Component {
   constructor(props) {
     super(props);
     this.ondragend = this.ondragend.bind(this);
+    this.valami = this.valami.bind(this);
 
     this.oneDimArray = JSON.parse(JSON.stringify(this.props.menuItems));
     this.state = {
@@ -48,12 +49,12 @@ export default class MenuDraggable extends Component {
   dragStart = (index) => (ev) => {
     ev.stopPropagation();
     ev.dataTransfer.setData('text/plain', ev.target);
-    this.setState({ active: 'moving', activeItemIndex: index });
+    this.setState({ active: 'moving', activeItemIndex: index, number: 55 });
   };
 
-  valami = (i) => (u) => {
-    return i + u;
-  };
+  valami(a) {
+    return a;
+  }
   drop = (targetId) => (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
@@ -143,6 +144,7 @@ export default class MenuDraggable extends Component {
           onDragOver={this.allowDrop}
           onDragEnd={this.ondragend}
           // onDragEnter={this.ondragenter(item.name)}
+          onClick={() => this.valami(2)}
         >
           {item.name}
           <br></br>
