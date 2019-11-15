@@ -194,7 +194,7 @@ const DndSimulator = {
    * \param targetElement The element the source element should be
    *                        dragged to.
    */
-  simulate: function(sourceElement, targetElement, event = 0) {
+  simulate: function(sourceElement, targetElement) {
     /* if strings are specified, assume they are CSS selectors */
     if (typeof sourceElement == 'string') {
       sourceElement = document.querySelector(sourceElement);
@@ -208,26 +208,6 @@ const DndSimulator = {
       left refers to X, and top to Y */
     var sourceCoordinates = sourceElement.getBoundingClientRect();
     var targetCoordinates = targetElement.getBoundingClientRect();
-
-    //ezt én írtam hozzá
-    if (event === 1) {
-      var mouseDownEvent = this.createEvent('mousedown', {
-        clientX: sourceCoordinates.left,
-        clientY: sourceCoordinates.top,
-      });
-
-      sourceElement.dispatchEvent(mouseDownEvent);
-
-      /* simulate a drag start event on the source element */
-      var dragStartEvent = this.createEvent('dragstart', {
-        clientX: sourceCoordinates.left,
-        clientY: sourceCoordinates.top,
-        dataTransfer: new DndSimulatorDataTransfer(),
-      });
-
-      sourceElement.dispatchEvent(dragStartEvent);
-      return;
-    }
 
     /* simulate a mouse down event on the coordinates
       of the source element */
