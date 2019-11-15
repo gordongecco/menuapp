@@ -209,6 +209,7 @@ const DndSimulator = {
     var sourceCoordinates = sourceElement.getBoundingClientRect();
     var targetCoordinates = targetElement.getBoundingClientRect();
 
+    //ezt én írtam hozzá
     if (event === 1) {
       var mouseDownEvent = this.createEvent('mousedown', {
         clientX: sourceCoordinates.left,
@@ -387,17 +388,19 @@ test('react testing library', () => {
 test('enzyme test DOM rendering', () => {
   const wrapper = mount(<MenuDraggable menuItems={menu1} />);
   expect(wrapper.state().active).toBe(null);
-  // expect(wrapper.exists({ id: 'menu 1' })).toBe(true);
+  expect(wrapper.exists({ id: 'menu 1' })).toBe(true);
   const startItem = wrapper.find({ id: 'menu 1' }).getDOMNode();
   const targetItem = wrapper.find({ id: 'menu 2' }).getDOMNode();
-  DndSimulator.simulate(startItem, targetItem);
   expect(wrapper.state().number).toBe(0);
   wrapper.instance().onClick();
   expect(wrapper.state().number).toBe(1);
   expect(wrapper.find({ id: 'b1' }).html()).toEqual('<button id="b1">1</button>');
   expect(wrapper.find({ id: 'b1' }).text()).toMatch('1');
-  DndSimulator.simulate(startItem, targetItem, 1);
-  // console.log(wrapper.text());
   expect(wrapper.find({ id: 'menu 1' }).invoke('onClick')(2)).toBe(2);
-  wrapper.find({ id: 'menu 1' }).simulate('dragstart');
+  let Dt = new DndSimulatorDataTransfer();
+  // wrapper
+  //   .find({ id: 'menu 1' })
+  //   .simulate('dragstart', { dataTransfer: { setData: function(a, b) {} } });
+  wrapper.find({ id: 'menu 1' }).simulate('dragstart', { dataTransfer: Dt });
+  expect(wrapper.state().active).toBe('moving');
 });
